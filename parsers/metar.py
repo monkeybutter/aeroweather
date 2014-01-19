@@ -32,7 +32,7 @@ __author__ = "Pablo Rozas-Larraondo"
 
 __email__ = "p.rozas.larraondo@gmail.com"
 
-__version__ = "0.1"
+__version__ = "0.2"
 
 __LICENSE__ = """
 Copyright (c) 2013, %s
@@ -181,96 +181,97 @@ TS_LOC_RE = re.compile(r"""TS(\s+(?P<loc>( OHD | VC | DSNT\s+ | \s+AND\s+ |
 class Metar(object):
     """METAR (aviation meteorology report)"""
 
-    def __init__( self, metarcode):
+    def __init__( self, metar_code):
         """Parse raw METAR code."""
         self.metar = dict()                # Metar object containing all information
-        self.metar['raw'] = metarcode
+        self.metar['raw'] = metar_code
+        metar_code = metar_code + ' '
 
         try:
             # Report type
-            match = TYPE_RE.match(metarcode)
+            match = TYPE_RE.match(metar_code)
             if match:
                 self.metar['type'] = match.group('type')
-                metarcode = metarcode[match.end():]
+                metar_code = metar_code[match.end():]
 
             # Airport code
-            match = STATION_RE.match(metarcode)
+            match = STATION_RE.match(metar_code)
             if match:
                 self.metar['code'] = match.group('station')
-                metarcode = metarcode[match.end():]
+                metar_code = metar_code[match.end():]
 
             # Datetime
-            match = TIME_RE.match(metarcode)
+            match = TIME_RE.match(metar_code)
             if match:
                 now = datetime.datetime.now()
                 metardate = datetime.datetime(now.year, now.month, int(match.group('day')), int(match.group('hour')), int(match.group('min')))
                 self.metar['datetime'] = metardate
-                metarcode = metarcode[match.end():]
+                metar_code = metar_code[match.end():]
 
             # Modifier
-            match = MODIFIER_RE.match(metarcode)
+            match = MODIFIER_RE.match(metar_code)
             if match:
                 self.metar['mod'] = match.group('mod')
-                metarcode = metarcode[match.end():]
+                metar_code = metar_code[match.end():]
 
             # Wind
-            match = WIND_RE.match(metarcode)
+            match = WIND_RE.match(metar_code)
             if match:
                 self.metar['wind'] = match.groupdict()
-                metarcode = metarcode[match.end():]
+                metar_code = metar_code[match.end():]
 
             # Visibility
-            match = VISIBILITY_RE.match(metarcode)
+            match = VISIBILITY_RE.match(metar_code)
             if match:
                 self.metar['visibility'] = []
                 while match:
                     self.metar['visibility'].append(match.group('vis'))
-                    metarcode = metarcode[match.end():]
-                    match = VISIBILITY_RE.match(metarcode)
+                    metar_code = metar_code[match.end():]
+                    match = VISIBILITY_RE.match(metar_code)
 
             # Runway
-            match = RUNWAY_RE.match(metarcode)
+            match = RUNWAY_RE.match(metar_code)
             if match:
                 self.metar['runway'] = []
                 while match:
                     print(match.group(0))
                     self.metar['runway'].append(match.group(0))
-                    metarcode = metarcode[match.end():]
-                    match = RUNWAY_RE.match(metarcode)
+                    metar_code = metar_code[match.end():]
+                    match = RUNWAY_RE.match(metar_code)
 
             # Weather
-            match = WEATHER_RE.match(metarcode)
+            match = WEATHER_RE.match(metar_code)
             if match:
                 self.metar['weather'] = []
                 while match:
                     self.metar['weather'].append(match.groupdict())
-                    metarcode = metarcode[match.end():]
-                    match = WEATHER_RE.match(metarcode)
+                    metar_code = metar_code[match.end():]
+                    match = WEATHER_RE.match(metar_code)
 
             # Sky
-            match = SKY_RE.match(metarcode)
+            match = SKY_RE.match(metar_code)
             if match:
                 self.metar['sky'] = []
                 while match:
                     self.metar['sky'].append(match.groupdict())
-                    metarcode = metarcode[match.end():]
-                    match = SKY_RE.match(metarcode)
+                    metar_code = metar_code[match.end():]
+                    match = SKY_RE.match(metar_code)
 
             # Temperature / Dew Point
-            match = TEMP_RE.match(metarcode)
+            match = TEMP_RE.match(metar_code)
             if match:
                 self.metar['temperature'] = match.group('temp')
                 self.metar['dewpoint'] = match.group('dewpt')
-                metarcode = metarcode[match.end():]
+                metar_code = metar_code[match.end():]
 
             # Pressure
-            match = PRESS_RE.match(metarcode)
+            match = PRESS_RE.match(metar_code)
             if match:
                 self.metar['pressure'] = match.group('press')
-                metarcode = metarcode[match.end():]
+                metar_code = metar_code[match.end():]
 
             # Quotient
-            self.metar['quotient'] = metarcode
+            self.metar['quotient'] = metar_code
 
         except Exception, err:
             pass

@@ -85,6 +85,7 @@ class Tafor(object):
         """Parse raw tafor code."""
         self.tafor = dict()                # Tafor object containing all information
         self.tafor['raw'] = tafor_code
+        tafor_code = tafor_code + ' '
 
 
         try:
