@@ -204,8 +204,7 @@ class Metar(object):
             if match:
                 now = datetime.datetime.now()
                 metardate = datetime.datetime(now.year, now.month, int(match.group('day')), int(match.group('hour')), int(match.group('min')))
-                self.metar['datetime_isoformat'] = metardate.isoformat('T')
-                self.metar['datetime_class'] = metardate
+                self.metar['datetime'] = metardate
                 metarcode = metarcode[match.end():]
 
             # Modifier

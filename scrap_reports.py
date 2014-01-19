@@ -40,7 +40,7 @@ for airport in airports:
     
     obs = metar.Metar(metar_code)
     frcst = tafor.Tafor(tafor_code)
-    
+
     connection = MongoClient("ds053698.mongolab.com", 53698)
     db = connection["metar"]
     # MongoLab has user authentication
@@ -52,6 +52,6 @@ for airport in airports:
         print('{} metar written to DB'.format(airport))
       
     collection = db.tafor
-    #if (collection.find({"code": airport}).sort([('_id', -1)]).limit(1)[0]['datetime'] != frcst.tafor['datetime']):
-    collection.insert(frcst.tafor)
-    print('{} tafor written to DB'.format(airport))
+    if (collection.find({"code": airport}).sort([('_id', -1)]).limit(1)[0]['datetime'] != frcst.tafor['datetime']):
+        collection.insert(frcst.tafor)
+        print('{} tafor written to DB'.format(airport))

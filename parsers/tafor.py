@@ -111,8 +111,7 @@ class Tafor(object):
             if match:
                 now = datetime.datetime.now()
                 tafor_date = datetime.datetime(now.year, now.month, int(match.group('day')), int(match.group('hour')), int(match.group('min')))
-                self.tafor['datetime_isoformat'] = tafor_date.isoformat('T')
-                self.tafor['datetime_class'] = tafor_date
+                self.tafor['datetime'] = tafor_date
                 tafor_code = tafor_code[match.end():]
 
             # Time valid
@@ -121,11 +120,9 @@ class Tafor(object):
                 validity = {}
                 now = datetime.datetime.now()
                 valid_from = datetime.datetime(now.year, now.month, int(match.group('dayfrom')), int(match.group('hourfrom')), 0)
-                validity["from_isoformat"] = valid_from.isoformat('T')
-                validity["from_class"] = valid_from
+                validity["from"] = valid_from
                 valid_to = datetime.datetime(now.year, now.month, int(match.group('dayto')), int(match.group('hourto')), 0)
-                validity["to_isoformat"] = valid_to.isoformat('T')
-                validity["to_class"] = valid_to
+                validity["to"] = valid_to
                 self.tafor['validity'] = validity
                 tafor_code = tafor_code[match.end():]
 
@@ -177,11 +174,9 @@ class Tafor(object):
                         validity = {}
                         now = datetime.datetime.now()
                         valid_from = datetime.datetime(now.year, now.month, int(match_in.group('dayfrom')), int(match_in.group('hourfrom')), 0)
-                        validity["from_isoformat"] = valid_from.isoformat('T')
-                        validity["from_class"] = valid_from
+                        validity["from"] = valid_from
                         valid_to = datetime.datetime(now.year, now.month, int(match_in.group('dayto')), int(match_in.group('hourto')), 0)
-                        validity["to_isoformat"] = valid_to.isoformat('T')
-                        validity["to_class"] = valid_to
+                        validity["to"] = valid_to
                         change["validity"] = validity
                         tafor_code = tafor_code[match_in.end():]
 
