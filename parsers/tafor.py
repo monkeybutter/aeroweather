@@ -171,55 +171,55 @@ class Tafor(object):
                     change = {}
                     change["modifier"] = match.groupdict()
 
-                # Validity
-                match_in = TIMEVALID_RE.match(tafor_code)
-                if match_in:
-                    validity = {}
-                    now = datetime.datetime.now()
-                    valid_from = datetime.datetime(now.year, now.month, int(match_in.group('dayfrom')), int(match_in.group('hourfrom')), 0)
-                    validity["from_isoformat"] = valid_from.isoformat('T')
-                    validity["from_class"] = valid_from
-                    valid_to = datetime.datetime(now.year, now.month, int(match_in.group('dayto')), int(match_in.group('hourto')), 0)
-                    validity["to_isoformat"] = valid_to.isoformat('T')
-                    validity["to_class"] = valid_to
-                    self.tafor['validity'] = validity
-                    tafor_code = tafor_code[match_in.end():]
-
-                # Wind
-                match_in = WIND_RE.match(tafor_code)
-                if match_in:
-                    change['wind'] = match_in.groupdict()
-                    tafor_code = tafor_code[match_in.end():]
-
-                # Visibility
-                match_in = VISIBILITY_RE.match(tafor_code)
-                if match_in:
-                    change['visibility'] = []
-                    while match_in:
-                        change['visibility'].append(match_in.group('vis'))
+                    # Validity
+                    match_in = TIMEVALID_RE.match(tafor_code)
+                    if match_in:
+                        validity = {}
+                        now = datetime.datetime.now()
+                        valid_from = datetime.datetime(now.year, now.month, int(match_in.group('dayfrom')), int(match_in.group('hourfrom')), 0)
+                        validity["from_isoformat"] = valid_from.isoformat('T')
+                        validity["from_class"] = valid_from
+                        valid_to = datetime.datetime(now.year, now.month, int(match_in.group('dayto')), int(match_in.group('hourto')), 0)
+                        validity["to_isoformat"] = valid_to.isoformat('T')
+                        validity["to_class"] = valid_to
+                        change["validity"] = validity
                         tafor_code = tafor_code[match_in.end():]
-                        match_in = VISIBILITY_RE.match(tafor_code)
 
-                # Weather
-                match_in = WEATHER_RE.match(tafor_code)
-                if match_in:
-                    change['weather'] = []
-                    while match_in:
-                        change['weather'].append(match_in.groupdict())
+                    # Wind
+                    match_in = WIND_RE.match(tafor_code)
+                    if match_in:
+                        change['wind'] = match_in.groupdict()
                         tafor_code = tafor_code[match_in.end():]
-                        match_in = WEATHER_RE.match(tafor_code)
 
-                # Sky
-                match_in = SKY_RE.match(tafor_code)
-                if match_in:
-                    change['sky'] = []
-                    while match_in:
-                        change['sky'].append(match_in.groupdict())
-                        tafor_code = tafor_code[match_in.end():]
-                        match_in = SKY_RE.match(tafor_code)
+                    # Visibility
+                    match_in = VISIBILITY_RE.match(tafor_code)
+                    if match_in:
+                        change['visibility'] = []
+                        while match_in:
+                            change['visibility'].append(match_in.group('vis'))
+                            tafor_code = tafor_code[match_in.end():]
+                            match_in = VISIBILITY_RE.match(tafor_code)
 
-                self.tafor['changes'].append(change)
-                match = CHANGES_RE.match(tafor_code)
+                    # Weather
+                    match_in = WEATHER_RE.match(tafor_code)
+                    if match_in:
+                        change['weather'] = []
+                        while match_in:
+                            change['weather'].append(match_in.groupdict())
+                            tafor_code = tafor_code[match_in.end():]
+                            match_in = WEATHER_RE.match(tafor_code)
+
+                    # Sky
+                    match_in = SKY_RE.match(tafor_code)
+                    if match_in:
+                        change['sky'] = []
+                        while match_in:
+                            change['sky'].append(match_in.groupdict())
+                            tafor_code = tafor_code[match_in.end():]
+                            match_in = SKY_RE.match(tafor_code)
+
+                    self.tafor['changes'].append(change)
+                    match = CHANGES_RE.match(tafor_code)
 
 
             # Quotient
