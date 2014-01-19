@@ -13,12 +13,10 @@ import urllib2
 import BeautifulSoup
 
 def url_metar(airport):
-    return 'http://www.aviationweather.gov/adds/metars/?station_ids=' + \
-    airport + '&std_trans=standard&chk_metars=on&hoursStr=most+recent+only&submitmet=Submit'
+    return "http://www.aviationweather.gov/adds/metars/?station_ids={0}&std_trans=standard&chk_metars=on&hoursStr=most+recent+only&submitmet=Submit".format(airport)
 
 def url_tafor(airport):
-    return 'http://www.aviationweather.gov/adds/tafs/?station_ids=' + \
-    airport + '&std_trans=standard&submit_taf=Get+TAFs'
+    return "http://www.aviationweather.gov/adds/tafs/?station_ids={0}&std_trans=standard&submit_taf=Get+TAFs".format(airport)
 
 airports = ['YSSY', 'YSCB', 'YMML', 'YMHB', 'YPPH', 'YBBN', 'YPAD']
 
