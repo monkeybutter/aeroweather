@@ -120,10 +120,17 @@ class Tafor(object):
             if match:
                 validity = {}
                 now = datetime.datetime.now()
-                valid_from = datetime.datetime(now.year, now.month, int(match.group('dayfrom')), int(match.group('hourfrom')), 0)
-                validity["from"] = valid_from
-                valid_to = datetime.datetime(now.year, now.month, int(match.group('dayto')), int(match.group('hourto')), 0)
-                validity["to"] = valid_to
+                if match.group('hourto') == '24':
+                    valid_from = datetime.datetime(now.year, now.month, int(match.group('dayfrom')), int(match.group('hourfrom')), 0)
+                    validity["from"] = valid_from
+                    valid_to = datetime.datetime(now.year, now.month, int(match.group('dayto')), 0, 0)
+                    valid_to = valid_to + datetime.timedelta(days=1)
+                    validity["to"] = valid_to
+                else:
+                    valid_from = datetime.datetime(now.year, now.month, int(match.group('dayfrom')), int(match.group('hourfrom')), 0)
+                    validity["from"] = valid_from
+                    valid_to = datetime.datetime(now.year, now.month, int(match.group('dayto')), int(match.group('hourto')), 0)
+                    validity["to"] = valid_to
                 self.tafor['validity'] = validity
                 tafor_code = tafor_code[match.end():]
 
@@ -174,10 +181,17 @@ class Tafor(object):
                     if match_in:
                         validity = {}
                         now = datetime.datetime.now()
-                        valid_from = datetime.datetime(now.year, now.month, int(match_in.group('dayfrom')), int(match_in.group('hourfrom')), 0)
-                        validity["from"] = valid_from
-                        valid_to = datetime.datetime(now.year, now.month, int(match_in.group('dayto')), int(match_in.group('hourto')), 0)
-                        validity["to"] = valid_to
+                        if match_in.group('hourto') == '24':
+                            valid_from = datetime.datetime(now.year, now.month, int(match_in.group('dayfrom')), int(match_in.group('hourfrom')), 0)
+                            validity["from"] = valid_from
+                            valid_to = datetime.datetime(now.year, now.month, int(match_in.group('dayto')), 0, 0)
+                            valid_to = valid_to + datetime.timedelta(days=1)
+                            validity["to"] = valid_to
+                        else:
+                            valid_from = datetime.datetime(now.year, now.month, int(match_in.group('dayfrom')), int(match_in.group('hourfrom')), 0)
+                            validity["from"] = valid_from
+                            valid_to = datetime.datetime(now.year, now.month, int(match_in.group('dayto')), int(match_in.group('hourto')), 0)
+                            validity["to"] = valid_to
                         change["validity"] = validity
                         tafor_code = tafor_code[match_in.end():]
 
