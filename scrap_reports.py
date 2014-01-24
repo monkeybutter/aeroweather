@@ -50,7 +50,7 @@ for airport in airports:
     if (collection.find({"code": airport}).sort([('_id', -1)]).limit(1)[0]['datetime'] != obs.metar['datetime']):
         collection.insert(obs.metar)
         print('{} metar written to DB'.format(airport))
-      
+
     collection = db.tafor
     if (collection.find({"code": airport}).sort([('_id', -1)]).limit(1)[0]['datetime'] != frcst.tafor['datetime']):
         collection.insert(frcst.tafor)
