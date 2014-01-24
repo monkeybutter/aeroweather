@@ -72,8 +72,13 @@ MINTEMP_RE = re.compile(r"""^TN(?P<temp>(M|-)?[\d]{2}|//)/
                              (?P<hour>[\d]{2})Z?\s+""",
                              re.VERBOSE)
 
-CHANGES_RE = re.compile(r"""^(?P<prob>PROB[\d]{2})?
+CHANGES_RE_OLD = re.compile(r"""^(?P<prob>PROB[\d]{2})?
                              (?P<change>(FM[\d]{6}|BECMG|TEMPO|INTER)*)?\s+""",
+                             re.VERBOSE)
+
+CHANGES_RE = re.compile(r"""^(?P<prob>PROB[\d]{2})?\s*
+                             (?P<change>FM|BECMG|TEMPO|INTER)?
+                             (?P<from>[\d]{6})?\s+""",
                              re.VERBOSE)
 
 
@@ -174,11 +179,18 @@ class Tafor(object):
                 while match:
                     tafor_code = tafor_code[match.end():]
                     change = {}
-                    change["modifier"] = match.groupdict()
-
+                    change["prob"] = match.group('prob')
+                    change["modifier"] = match.group('change')
+                    validity = {}
+                    now = datetime.datetime.now()
+                    if match.group('from') != None:
+                        valid_from = datetime.datetime(now.year, now.month, int(match.group('from')[:2]), int(match.group('from')[2:-2]), int(match.group('from')[-2:]))
+                        validity["from"] = valid_from
+                        change["validity"] = validity
                     # Validity
                     match_in = TIMEVALID_RE.match(tafor_code)
                     if match_in:
+                        print(match.group('change'))
                         validity = {}
                         now = datetime.datetime.now()
                         if match_in.group('hourto') == '24':
