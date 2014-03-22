@@ -274,8 +274,14 @@ class Metar(object):
             # Temperature / Dew Point
             match = TEMP_RE.match(metar_code)
             if match:
-                self.metar['temperature'] = match.group('temp')
-                self.metar['dewpoint'] = match.group('dewpt')
+                s = list(match.group('temp'))
+                if s[0] == 'M':
+                    s[0] = '-'
+                self.metar['temperature'] = "".join(s)
+                s = list(match.group('dewpt'))
+                if s[0] == 'M':
+                    s[0] = '-'
+                self.metar['dewpoint'] = "".join(s)
                 metar_code = metar_code[match.end():]
             else:
                 self.metar['temperature'] = None
