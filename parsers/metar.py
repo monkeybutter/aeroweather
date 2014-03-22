@@ -54,6 +54,10 @@ import datetime
 
 MISSING_RE = re.compile(r"^[M/]+$")
 
+DATE_RE = re.compile(r"""^(?P<year>\d\d)-
+                          (?P<month>\d\d)-
+                          (?P<day>\d\d)?\s+""",
+                          re.VERBOSE)
 TYPE_RE = re.compile(r"^(?P<type>METAR|SPECI)?\s+")
 STATION_RE = re.compile(r"^(?P<station>[A-Z][A-Z0-9]{3})\s+")
 TIME_RE = re.compile(r"""^(?P<day>\d\d)
@@ -186,8 +190,16 @@ class Metar(object):
         self.metar = dict()                # Metar object containing all information
         self.metar['raw'] = metar_code
         metar_code = metar_code + ' '
+        date = None
 
         try:
+
+            # Report type
+            match = DATE_RE.match(metar_code)
+            if match:
+                date = datetime.datetime(2000+int(match.group('year')), int(match.group('month')), int(match.group('day')), 0, 0)
+                metar_code = metar_code[match.end():]
+
             # Report type
             match = TYPE_RE.match(metar_code)
             if match:
@@ -203,8 +215,9 @@ class Metar(object):
             # Datetime
             match = TIME_RE.match(metar_code)
             if match:
-                now = datetime.datetime.now()
-                metardate = datetime.datetime(now.year, now.month, int(match.group('day')), int(match.group('hour')), int(match.group('min')))
+                if date is None:
+                    date = datetime.datetime.now()
+                metardate = datetime.datetime(date.year, date.month, int(match.group('day')), int(match.group('hour')), int(match.group('min')))
                 self.metar['datetime'] = metardate
                 metar_code = metar_code[match.end():]
 
@@ -219,6 +232,8 @@ class Metar(object):
             if match:
                 self.metar['wind'] = match.groupdict()
                 metar_code = metar_code[match.end():]
+            else:
+                self.metar['wind'] = None
 
             # Visibility
             match = VISIBILITY_RE.match(metar_code)
@@ -234,7 +249,6 @@ class Metar(object):
             if match:
                 self.metar['runway'] = []
                 while match:
-                    print(match.group(0))
                     self.metar['runway'].append(match.group(0))
                     metar_code = metar_code[match.end():]
                     match = RUNWAY_RE.match(metar_code)
@@ -263,12 +277,17 @@ class Metar(object):
                 self.metar['temperature'] = match.group('temp')
                 self.metar['dewpoint'] = match.group('dewpt')
                 metar_code = metar_code[match.end():]
+            else:
+                self.metar['temperature'] = None
+                self.metar['dewpoint'] = None
 
             # Pressure
             match = PRESS_RE.match(metar_code)
             if match:
                 self.metar['pressure'] = match.group('press')
                 metar_code = metar_code[match.end():]
+            else:
+                self.metar['pressure'] = None
 
             # Quotient
             self.metar['quotient'] = metar_code
