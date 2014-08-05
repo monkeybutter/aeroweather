@@ -108,6 +108,7 @@ if __name__ == "__main__":
                       str_run + str_lead + '.grb2.ascii?U-component_of_wind_height_above_ground[0][0][248][302],' + \
                       'V-component_of_wind_height_above_ground[0][0][248][302],' + \
                       'Relative_humidity_height_above_ground[0][0][248][302],' + \
+                      'Pressure_surface[0][248][302],' + \
                       'Temperature_height_above_ground[0][0][248][302]'
 
                 try:
@@ -118,10 +119,11 @@ if __name__ == "__main__":
                     lista = data.split('\n')
 
                     print(value_date.strftime("%Y%m%d  %H:%M"))
-                    uwind = lista[40].split(',')[1].strip()
-                    rh = lista[56].split(',')[1].strip()
-                    temp = lista[72].split(',')[1].strip()
-                    vwind = lista[88].split(',')[1].strip()
+                    uwind = lista[49].split(',')[1].strip()
+                    rh = lista[65].split(',')[1].strip()
+                    press = lista[81].split(',')[1].strip()
+                    temp = lista[94].split(',')[1].strip()
+                    vwind = lista[110].split(',')[1].strip()
 
                     f_out.write('{}, {}, {}, {}, {}, {}\n'.format(value_date.strftime("%Y%m%d"), value_date.strftime("%H:%M"), uwind, vwind, temp, rh))
 
