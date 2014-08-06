@@ -97,7 +97,7 @@ if __name__ == "__main__":
 
     day_count = 60
 
-    f_out=open('./data.csv', 'a')
+    f_out = open('./data.csv', 'a')
     f_out.write('date, time, uwind, vwind, temp, rh\n')
 
     for day_date in (start_date + timedelta(n) for n in range(day_count)):
@@ -133,7 +133,6 @@ if __name__ == "__main__":
                 except urllib2.URLError, e:
                     print(e.args)
                     continue
-
 
     f_out.close()
 """
