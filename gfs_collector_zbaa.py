@@ -11,7 +11,7 @@ from datetime import timedelta, datetime
 from collections import OrderedDict
 import numpy as np
 from pymongo import MongoClient
-from parsers import metar
+from math import sqrt, pow, atan2, pi
 
 
 def parseLines(lines, index, precip, temperature):
@@ -115,17 +115,20 @@ def get_gfs_indices(lat, lon):
 
 if __name__ == "__main__":
 
-    gfs_indices = get_gfs_indices(-33.9461, 151.1772)
-    print gfs_indices
+    gfs_indices = get_gfs_indices(40.08, 116.5844)
+    start_date = datetime(2013, 2, 25)
 
-    start_date = datetime(2013, 12, 15)
+    connection = MongoClient("ds053698.mongolab.com", 53698)
+    db = connection["metar"]
+    # MongoLab has user authentication
+    db.authenticate("metar", "metar")
+
+    gfs_coll = db['gfs']
+
     runs = OrderedDict([(0, "_0000_"), (6, "_0600_"), (12, "_1200_"), (18, "_1800_")])
     leads = OrderedDict([(0, "000"), (3, "003")])
 
-    day_count = 17
-
-    f_out=open('./data_yssy2.csv', 'w')
-    f_out.write('date, time, uwind, vwind, temp, rh\n')
+    day_count = 310
 
     for day_date in (start_date + timedelta(n) for n in range(day_count)):
         for int_run, str_run in runs.iteritems():
@@ -150,7 +153,18 @@ if __name__ == "__main__":
                     temp = lista[72].split(',')[1].strip()
                     vwind = lista[88].split(',')[1].strip()
 
-                    f_out.write('{}, {}, {}, {}, {}, {}\n'.format(value_date.strftime("%Y%m%d"), value_date.strftime("%H:%M"), uwind, vwind, temp, rh))
+
+                    obj = {}
+
+                    obj["airport"] = "ZBAA"
+                    obj["timestamp"] = value_date
+                    obj["temperature"] = round(float(temp) - 273.15, 2)
+                    obj["rel_humidity"] = float(rh)
+                    obj["v_wind"] = float(vwind)
+                    obj["u_wind"] = float(uwind)
+                    obj["wind_spd"] = round(sqrt(pow(float(uwind), 2) + pow(float(vwind), 2)), 2)
+                    obj["wind_dir"] = -1 * (round(180.0 * atan2(obj["v_wind"], obj["u_wind"]) / pi, 2) - 90) % 360
+                    gfs_coll.insert(obj)
 
                 except urllib2.HTTPError, e:
                     print(e.code)
@@ -159,8 +173,6 @@ if __name__ == "__main__":
                     print(e.args)
                     continue
 
-
-    f_out.close()
 """
 	connection = MongoClient("ds053139.mongolab.com", 53139)
 db = connection["gfs"]
