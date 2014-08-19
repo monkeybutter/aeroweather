@@ -116,7 +116,7 @@ def get_gfs_indices(lat, lon):
 if __name__ == "__main__":
 
     gfs_indices = get_gfs_indices(40.08, 116.5844)
-    start_date = datetime(2013, 2, 25)
+    start_date = datetime(2013, 6, 29)
 
     connection = MongoClient("ds053698.mongolab.com", 53698)
     db = connection["metar"]
@@ -128,7 +128,7 @@ if __name__ == "__main__":
     runs = OrderedDict([(0, "_0000_"), (6, "_0600_"), (12, "_1200_"), (18, "_1800_")])
     leads = OrderedDict([(0, "000"), (3, "003")])
 
-    day_count = 310
+    day_count = 177
 
     for day_date in (start_date + timedelta(n) for n in range(day_count)):
         for int_run, str_run in runs.iteritems():

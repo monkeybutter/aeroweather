@@ -29,12 +29,12 @@ with open('/home/roz016/Dropbox/Data for Tree/METAR source/YSSY.txt', 'r') as f:
 
                 obj["timestamp"] = obs_date
 
-                if obs.metar["temperature"] is not None:
+                if obs.metar["temperature"] is not None and obs.metar["temperature"] != "//":
                     obj["temperature"] = int(obs.metar["temperature"])
                 else:
                     obj["temperature"] = None
 
-                if obs.metar["dewpoint"] is not None and obs.metar["temperature"] is not None:
+                if obs.metar["dewpoint"] is not None and obs.metar["temperature"] is not None and obs.metar["dewpoint"] != "//" and obs.metar["temperature"] != "//":
                     a = int(obs.metar["dewpoint"]) / (int(obs.metar["dewpoint"]) + Tn)
                     b = int(obs.metar["temperature"]) / (int(obs.metar["temperature"]) + Tn)
                     obj["rel_humidity"] = round(100 * pow(10, m * (a - b)), 2)
