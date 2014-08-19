@@ -90,12 +90,9 @@ def getDate():
         if (match):
             return match.group(1)
 
-def get_index_coords(lat, lon):
+def get_gfs_indices(lat, lon):
     lats = np.arange(90.0, -90.5, -.5)
     lons = np.arange(0.0, 360.0, .5)
-
-    print(lats)
-    print(lons)
 
     dist_lat = sys.float_info.max
     best_lat = -1
@@ -115,16 +112,17 @@ def get_index_coords(lat, lon):
 
 
 if __name__ == "__main__":
+    
+    gfs_indices = get_gfs_indices(33.6367, 360.0-84.4281)
+    print gfs_indices
 
-    print get_index_coords(-33.9461, 151.1772)
-    """
-    start_date = datetime(2011, 1, 1)
+    start_date = datetime(2013, 12, 15)
     runs = OrderedDict([(0, "_0000_"), (6, "_0600_"), (12, "_1200_"), (18, "_1800_")])
     leads = OrderedDict([(0, "000"), (3, "003")])
 
-    day_count = 365
+    day_count = 17
 
-    f_out = open('./data.csv', 'a')
+    f_out=open('./data_katl2.csv', 'w')
     f_out.write('date, time, uwind, vwind, temp, rh\n')
 
     for day_date in (start_date + timedelta(n) for n in range(day_count)):
@@ -132,11 +130,10 @@ if __name__ == "__main__":
             for int_lead, str_lead in leads.iteritems():
                 url = 'http://nomads.ncdc.noaa.gov/thredds/dodsC/gfs-004-anl/' + day_date.strftime("%Y%m") + \
                       '/' + day_date.strftime("%Y%m%d") + '/gfsanl_4_' + day_date.strftime("%Y%m%d") + \
-                      str_run + str_lead + '.grb2.ascii?U-component_of_wind_height_above_ground[0][0][248][302],' + \
-                      'V-component_of_wind_height_above_ground[0][0][248][302],' + \
-                      'Relative_humidity_height_above_ground[0][0][248][302],' + \
-                      'Pressure_surface[0][248][302],' + \
-                      'Temperature_height_above_ground[0][0][248][302]'
+                      str_run + str_lead + '.grb2.ascii?U-component_of_wind_height_above_ground[0][0][' + str(gfs_indices[0]) + '][' + str(gfs_indices[1]) + '],' + \
+                      'V-component_of_wind_height_above_ground[0][0][' + str(gfs_indices[0]) + '][' + str(gfs_indices[1]) + '],' + \
+                      'Relative_humidity_height_above_ground[0][0][' + str(gfs_indices[0]) + '][' + str(gfs_indices[1]) + '],' + \
+                      'Temperature_height_above_ground[0][0][' + str(gfs_indices[0]) + '][' + str(gfs_indices[1]) + ']'
 
                 try:
                     data = urllib2.urlopen(url).read()
@@ -146,11 +143,10 @@ if __name__ == "__main__":
                     lista = data.split('\n')
 
                     print(value_date.strftime("%Y%m%d  %H:%M"))
-                    uwind = lista[49].split(',')[1].strip()
-                    rh = lista[65].split(',')[1].strip()
-                    press = lista[81].split(',')[1].strip()
-                    temp = lista[94].split(',')[1].strip()
-                    vwind = lista[110].split(',')[1].strip()
+                    uwind = lista[40].split(',')[1].strip()
+                    rh = lista[56].split(',')[1].strip()
+                    temp = lista[72].split(',')[1].strip()
+                    vwind = lista[88].split(',')[1].strip()
 
                     f_out.write('{}, {}, {}, {}, {}, {}\n'.format(value_date.strftime("%Y%m%d"), value_date.strftime("%H:%M"), uwind, vwind, temp, rh))
 
@@ -161,8 +157,8 @@ if __name__ == "__main__":
                     print(e.args)
                     continue
 
+
     f_out.close()
-    """
 """
 	connection = MongoClient("ds053139.mongolab.com", 53139)
 db = connection["gfs"]
