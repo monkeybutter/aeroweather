@@ -116,7 +116,7 @@ def get_gfs_indices(lat, lon):
 if __name__ == "__main__":
 
     gfs_indices = get_gfs_indices(40.08, 116.5844)
-    start_date = datetime(2013, 6, 29)
+    start_date = datetime(2013, 10, 12)
 
     connection = MongoClient("ds053698.mongolab.com", 53698)
     db = connection["metar"]
@@ -163,7 +163,7 @@ if __name__ == "__main__":
                     obj["v_wind"] = float(vwind)
                     obj["u_wind"] = float(uwind)
                     obj["wind_spd"] = round(sqrt(pow(float(uwind), 2) + pow(float(vwind), 2)), 2)
-                    obj["wind_dir"] = -1 * (round(180.0 * atan2(obj["v_wind"], obj["u_wind"]) / pi, 2) - 90) % 360
+                    obj["wind_dir"] = -1 * (round(180.0 * atan2(obj["v_wind"], obj["u_wind"]) / pi, 2) + 90) % 360
                     gfs_coll.insert(obj)
 
                 except urllib2.HTTPError, e:

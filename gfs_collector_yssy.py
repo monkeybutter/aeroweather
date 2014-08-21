@@ -118,11 +118,23 @@ if __name__ == "__main__":
     gfs_indices = get_gfs_indices(-33.9461, 151.1772)
     print gfs_indices
 
+    start_date = datetime(2011, 1, 1)
+
+    connection = MongoClient("ds053698.mongolab.com", 53698)
+    db = connection["metar"]
+    # MongoLab has user authentication
+    db.authenticate("metar", "metar")
+
+    gfs_coll = db['gfs']
+
+    runs = OrderedDict([(0, "_0000_"), (6, "_0600_"), (12, "_1200_"), (18, "_1800_")])
+    leads = OrderedDict([(0, "000"), (3, "003")])
+
     start_date = datetime(2013, 12, 15)
     runs = OrderedDict([(0, "_0000_"), (6, "_0600_"), (12, "_1200_"), (18, "_1800_")])
     leads = OrderedDict([(0, "000"), (3, "003")])
 
-    day_count = 17
+    day_count = 365
 
     f_out=open('./data_yssy2.csv', 'w')
     f_out.write('date, time, uwind, vwind, temp, rh\n')

@@ -15,7 +15,7 @@ db.authenticate("metar", "metar")
 
 metar_coll = db['metar']
 
-with open('/home/roz016/Dropbox/Data for Tree/METAR source/YSSY.txt', 'r') as f:
+with open('/home/roz016/Dropbox/Data for Tree/METAR source/KATL.txt', 'r') as f:
         for line in f:
             obs_date = datetime.strptime(line[:8], '%y-%m-%d')
             obs = metar.Metar("METAR" + line[8:])
@@ -58,8 +58,8 @@ with open('/home/roz016/Dropbox/Data for Tree/METAR source/YSSY.txt', 'r') as f:
                         elif obs.metar["wind"]["units"] == 'MPS':
                             pass
                         else:
-                            print("ERROR")
-                            break
+                            print(obs.metar["wind"]["units"])
+                            obj["wind_spd"] = None
                     else:
                         obj["wind_spd"] = None
 
