@@ -82,7 +82,7 @@ KATL (33.6367, 360.0-84.4281)
 if __name__ == "__main__":
 
     gfs_indices = get_gfs_indices(51.4775, 360.0-0.4614)
-    start_date = datetime(2012, 2, 4)
+    start_date = datetime(2013, 1, 2)
 
     connection = MongoClient("ds053698.mongolab.com", 53698)
     db = connection["metar"]

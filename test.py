@@ -10,7 +10,7 @@ print(frcst.tafor)
 
 
 from parsers import metar
-metar_code = 'METAR ZBAA 231500Z VRB01MPS 4000 HZ NSC M06/M13 Q1035 NOSIG'
+metar_code = 'METAR YSSY 011930Z 20015KT 9000 FEW009 OVC016 21/18 Q1012 FM1930 18020KT 9999'
 print(metar_code)
 rep = metar.Metar(metar_code)
 print(rep.metar)

@@ -16,6 +16,8 @@ def read_mongo(db, collection, query={}, host='localhost', port=27017, username=
     # Make a query to the specific DB and Collection
     cursor = db[collection].find(query)
 
+    print db[collection].distinct("airport")
+
     # Expand the cursor and construct the DataFrame
     df =  pd.DataFrame(list(cursor))
 
@@ -26,7 +28,7 @@ def read_mongo(db, collection, query={}, host='localhost', port=27017, username=
     return df
 
 if __name__ == "__main__":
-    store = pd.HDFStore('/home/roz016/Desktop/store.h5')
+    store = pd.HDFStore('/Users/SmartWombat/Desktop/store.h5')
     df = read_mongo('metar', 'metar', {}, 'ds053698.mongolab.com', 53698, 'metar', 'metar')
     print("done metar")
     store["metar"] = df
