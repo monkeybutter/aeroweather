@@ -28,7 +28,7 @@ def read_mongo(db, collection, query={}, host='localhost', port=27017, username=
     return df
 
 if __name__ == "__main__":
-    store = pd.HDFStore('/home/roz016/store.h5')
+    store = pd.HDFStore('/Users/monkeybutter/Desktop/store.h5')
     df = read_mongo('metar', 'metar', {}, 'ds053698.mongolab.com', 53698, 'metar', 'metar')
     print("done metar")
     store["metar"] = df
