@@ -6,8 +6,8 @@ import datetime
 
 with open("petar_temp.txt", "w") as metar:
         
-    startDate = datetime.date(2011, 6, 16)
-    endDate = datetime.date(2012, 2, 1)
+    startDate = datetime.date(2012, 2, 2)
+    endDate = datetime.date(2012, 10, 1)
     delta = datetime.timedelta(days=1)
 
     delta = datetime.timedelta(days=1)
