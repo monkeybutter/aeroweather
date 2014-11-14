@@ -79,10 +79,26 @@ KATL (33.6367, 360.0-84.4281)
 
 """
 
+airport = {}
+airport['code'] = 'LEBL'
+airport['lat'] = 41.296944
+airport['lon'] = 2.078333
+
+airport = {}
+airport['code'] = 'LFPG'
+airport['lat'] = 49.009722
+airport['lon'] = 2.547778
+
+airport = {}
+airport['code'] = 'LIMC'
+airport['lat'] = 45.63
+airport['lon'] = 8.723056
+
 if __name__ == "__main__":
 
-    gfs_indices = get_gfs_indices(51.4775, 360.0-0.4614)
-    start_date = datetime(2013, 1, 2)
+    gfs_indices = get_gfs_indices(airport['lat'], airport['lon'])
+
+    start_date = datetime(2011, 1, 1)
 
     connection = MongoClient("ds053698.mongolab.com", 53698)
     db = connection["metar"]
@@ -118,7 +134,7 @@ if __name__ == "__main__":
 
                     obj = {}
 
-                    obj["airport"] = "EGLL"
+                    obj["airport"] = airport['code']
                     obj["timestamp"] = value_date
                     obj["temperature"] = round(raw['temp'] - 273.15, 2)
                     obj["rel_humidity"] = raw['rh']
