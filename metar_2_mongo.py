@@ -15,7 +15,7 @@ Tn = 240.7263
 
 #metar_coll = db['metar']
 
-with open('./petar_temp3.txt', 'r') as f:
+with open('./metar_temp.txt', 'r') as f:
     for line in f:
         obs_date = datetime.strptime(line[:8], '%y-%m-%d')
         obs = metar.Metar("METAR" + line[8:])
