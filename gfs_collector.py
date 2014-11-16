@@ -94,11 +94,16 @@ airport['code'] = 'LIMC'
 airport['lat'] = 45.63
 airport['lon'] = 8.723056
 
+airport = {}
+airport['code'] = 'EDDT'
+airport['lat'] = 52.559722
+airport['lon'] = 13.287778
+
 if __name__ == "__main__":
 
     gfs_indices = get_gfs_indices(airport['lat'], airport['lon'])
 
-    start_date = datetime(2011, 1, 1)
+    start_date = datetime(2012, 11, 13)
 
     connection = MongoClient("ds053698.mongolab.com", 53698)
     db = connection["metar"]

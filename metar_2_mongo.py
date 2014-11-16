@@ -15,10 +15,12 @@ Tn = 240.7263
 
 #metar_coll = db['metar']
 
-with open('./metar_temp.txt', 'r') as f:
+with open('./EDDT.txt', 'r') as f:
     for line in f:
         obs_date = datetime.strptime(line[:8], '%y-%m-%d')
-        obs = metar.Metar("METAR" + line[8:])
+        obs = metar.Metar(line[9:])
+
+        #print line[8:]
 
         if obs.metar.has_key("datetime") and obs.metar.has_key("dewpoint"):
             obs_date = obs_date.replace(hour=obs.metar["datetime"].hour, minute=obs.metar["datetime"].minute)
