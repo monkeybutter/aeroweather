@@ -258,7 +258,7 @@ class Metar(object):
 
             # Weather
             match = WEATHER_RE.match(metar_code)
-            print metar_code
+
             if match:
                 self.metar['weather'] = []
                 while match:

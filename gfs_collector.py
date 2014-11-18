@@ -85,11 +85,6 @@ airport['lat'] = 41.296944
 airport['lon'] = 2.078333
 
 airport = {}
-airport['code'] = 'LFPG'
-airport['lat'] = 49.009722
-airport['lon'] = 2.547778
-
-airport = {}
 airport['code'] = 'LIMC'
 airport['lat'] = 45.63
 airport['lon'] = 8.723056
@@ -99,11 +94,16 @@ airport['code'] = 'EDDT'
 airport['lat'] = 52.559722
 airport['lon'] = 13.287778
 
+airport = {}
+airport['code'] = 'LFPG'
+airport['lat'] = 49.009722
+airport['lon'] = 2.547778
+
 if __name__ == "__main__":
 
     gfs_indices = get_gfs_indices(airport['lat'], airport['lon'])
 
-    start_date = datetime(2013, 12, 31)
+    start_date = datetime(2011, 1, 1)
 
     connection = MongoClient("ds053698.mongolab.com", 53698)
     db = connection["metar"]
@@ -115,7 +115,7 @@ if __name__ == "__main__":
     runs = OrderedDict([(0, "_0000_"), (6, "_0600_"), (12, "_1200_"), (18, "_1800_")])
     leads = OrderedDict([(0, "000"), (3, "003")])
 
-    day_count = 1
+    day_count = 365
 
     for day_date in (start_date + timedelta(n) for n in range(day_count)):
         for int_run, str_run in runs.iteritems():

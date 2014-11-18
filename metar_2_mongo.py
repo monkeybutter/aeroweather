@@ -8,15 +8,16 @@ from math import pow
 m = 7.591386
 Tn = 240.7263
 
-#connection = MongoClient("ds053698.mongolab.com", 53698)
-#db = connection["metar"]
+connection = MongoClient("ds053698.mongolab.com", 53698)
+db = connection["metar"]
 # MongoLab has user authentication
-#db.authenticate("metar", "metar")
+db.authenticate("metar", "metar")
 
-#metar_coll = db['metar']
+metar_coll = db['metar']
 
-with open('/home/roz016/Dropbox/Data for Tree/METAR source/EDDT.txt', 'r') as f:
+with open('/home/roz016/Desktop/chunk.txt', 'r') as f:
     for line in f:
+        print line
         obs_date = datetime.strptime(line[:8], '%y-%m-%d')
         obs = metar.Metar(line[9:])
 
@@ -61,8 +62,7 @@ with open('/home/roz016/Dropbox/Data for Tree/METAR source/EDDT.txt', 'r') as f:
                 else:
                     obj["wind_spd"] = None
 
-            if obj["pressure"] is None:
-                print line
+
                 #break
-            #metar_coll.insert(obj)
+            metar_coll.insert(obj)
             #print obj

@@ -4,15 +4,15 @@ import urllib2
 import re
 import datetime
 
-with open("metar_temp.txt", "w") as metar:
+with open("LFPG.txt", "w") as metar:
         
-    startDate = datetime.date(2013, 1, 7)
-    endDate = datetime.date(2013, 8, 1)
+    startDate = datetime.date(2013, 11, 28)
+    endDate = datetime.date(2014, 1, 1)
     delta = datetime.timedelta(days=1)
 
     while startDate <= endDate:
         print startDate.strftime("%y-%m-%d ")
-        request = startDate.strftime("http://vortex.plymouth.edu/cgi-bin/gen_statlog-u.cgi?ident=LEBL&pl=none0&yy=" + "%y" + "&mm=" + "%m" + "&dd=" + "%d")
+        request = startDate.strftime("http://vortex.plymouth.edu/cgi-bin/gen_statlog-u.cgi?ident=LFPG&pl=none0&yy=" + "%y" + "&mm=" + "%m" + "&dd=" + "%d")
         response = urllib2.urlopen(request)
 
         semaphore = False
@@ -23,7 +23,7 @@ with open("metar_temp.txt", "w") as metar:
                 metar.write(' ' + ' '.join(line.split()))
 
             else:
-                match = re.search('^LEBL', line)
+                match = re.search('^LFPG', line)
                 if match:
                     semaphore = True
                     metar.write('\n' + startDate.strftime("%y-%m-%d ") + ' '.join(line.split()))
