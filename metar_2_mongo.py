@@ -15,7 +15,7 @@ db.authenticate("metar", "metar")
 
 metar_coll = db['metar']
 
-with open('/home/roz016/Dropbox/Data for Tree/METAR source/LEBL_clean.txt', 'r') as f:
+with open('/home/roz016/Desktop/chunk.txt', 'r') as f:
     for line in f:
         print line
         obs_date = datetime.strptime(line[:8], '%y-%m-%d')
