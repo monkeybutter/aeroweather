@@ -15,7 +15,7 @@ Tn = 240.7263
 
 #metar_coll = db['metar']
 
-with open('./EDDT.txt', 'r') as f:
+with open('/home/roz016/Dropbox/Data for Tree/METAR source/EDDT.txt', 'r') as f:
     for line in f:
         obs_date = datetime.strptime(line[:8], '%y-%m-%d')
         obs = metar.Metar(line[9:])

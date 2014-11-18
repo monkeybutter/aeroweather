@@ -237,6 +237,7 @@ class Metar(object):
             else:
                 self.metar['wind'] = None
 
+
             # Visibility
             match = VISIBILITY_RE.match(metar_code)
             if match:
@@ -257,6 +258,7 @@ class Metar(object):
 
             # Weather
             match = WEATHER_RE.match(metar_code)
+            print metar_code
             if match:
                 self.metar['weather'] = []
                 while match:
