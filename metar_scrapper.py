@@ -6,8 +6,8 @@ import datetime
 
 with open("metar_temp.txt", "w") as metar:
         
-    startDate = datetime.date(2012, 1, 2)
-    endDate = datetime.date(2012, 8, 1)
+    startDate = datetime.date(2012, 6, 16)
+    endDate = datetime.date(2013, 3, 1)
     delta = datetime.timedelta(days=1)
 
     while startDate <= endDate:
