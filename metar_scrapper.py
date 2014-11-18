@@ -4,10 +4,10 @@ import urllib2
 import re
 import datetime
 
-with open("LFPG.txt", "w") as metar:
+with open("metar_temp.txt", "w") as metar:
         
-    startDate = datetime.date(2011, 5, 10)
-    endDate = datetime.date(2012, 1, 1)
+    startDate = datetime.date(2012, 1, 2)
+    endDate = datetime.date(2012, 8, 1)
     delta = datetime.timedelta(days=1)
 
     while startDate <= endDate:
