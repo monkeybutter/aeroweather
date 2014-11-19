@@ -16,48 +16,52 @@ db.authenticate("metar", "metar")
 metar_coll = db['metar']
 
 with open('/home/roz016/Dropbox/Data for Tree/METAR source/LEBL_clean_dups.txt', 'r') as f:
-    for line in f:
-        obs_date = datetime.strptime(line[:8], '%y-%m-%d')
-        obs = metar.Metar(line)
-        print line[:8]
+    for line_number, line in enumerate(f):
+        if line_number < 19825:
+            pass
 
-        if obs.metar.has_key("datetime") and obs.metar.has_key("dewpoint"):
-            obs_date = obs_date.replace(hour=obs.metar["datetime"].hour, minute=obs.metar["datetime"].minute)
+        else:
+            obs_date = datetime.strptime(line[:8], '%y-%m-%d')
+            obs = metar.Metar(line)
+            print line[:8]
 
-            obj = {"airport": obs.metar["code"], "timestamp": obs_date}
+            if obs.metar.has_key("datetime") and obs.metar.has_key("dewpoint"):
+                obs_date = obs_date.replace(hour=obs.metar["datetime"].hour, minute=obs.metar["datetime"].minute)
 
-            if obs.metar["temperature"] is not None and obs.metar["temperature"] != "//":
-                obj["temperature"] = int(obs.metar["temperature"])
-            else:
-                obj["temperature"] = None
+                obj = {"airport": obs.metar["code"], "timestamp": obs_date}
 
-            if obs.metar["dewpoint"] is not None and obs.metar["temperature"] is not None and obs.metar["dewpoint"] != "//" and obs.metar["temperature"] != "//":
-                a = int(obs.metar["dewpoint"]) / (int(obs.metar["dewpoint"]) + Tn)
-                b = int(obs.metar["temperature"]) / (int(obs.metar["temperature"]) + Tn)
-                obj["rel_humidity"] = round(100 * pow(10, m * (a - b)), 2)
-            else:
-                obj["rel_humidity"] = None
-
-            if obs.metar["pressure"] is not None and obs.metar["pressure"] != "////":
-                obj["pressure"] = int(obs.metar["pressure"])
-            else:
-                obj["pressure"] = None
-
-            if obs.metar["wind"] is not None:
-
-                obj["wind_dir"] = obs.metar["wind"]["dir"]
-
-                if obs.metar["wind"]["speed"] is not None and obs.metar["wind"]["speed"] != "//":
-                    obj["wind_spd"] = int(obs.metar["wind"]["speed"])
-
-                    if obs.metar["wind"]["units"] == 'KT':
-                        obj["wind_spd"] = round(obj["wind_spd"] * 0.51444444444, 2)
-                    elif obs.metar["wind"]["units"] == 'MPS':
-                        pass
-                    else:
-                        print(obs.metar["wind"]["units"])
-                        obj["wind_spd"] = None
+                if obs.metar["temperature"] is not None and obs.metar["temperature"] != "//":
+                    obj["temperature"] = int(obs.metar["temperature"])
                 else:
-                    obj["wind_spd"] = None
+                    obj["temperature"] = None
 
-            metar_coll.insert(obj)
+                if obs.metar["dewpoint"] is not None and obs.metar["temperature"] is not None and obs.metar["dewpoint"] != "//" and obs.metar["temperature"] != "//":
+                    a = int(obs.metar["dewpoint"]) / (int(obs.metar["dewpoint"]) + Tn)
+                    b = int(obs.metar["temperature"]) / (int(obs.metar["temperature"]) + Tn)
+                    obj["rel_humidity"] = round(100 * pow(10, m * (a - b)), 2)
+                else:
+                    obj["rel_humidity"] = None
+
+                if obs.metar["pressure"] is not None and obs.metar["pressure"] != "////":
+                    obj["pressure"] = int(obs.metar["pressure"])
+                else:
+                    obj["pressure"] = None
+
+                if obs.metar["wind"] is not None:
+
+                    obj["wind_dir"] = obs.metar["wind"]["dir"]
+
+                    if obs.metar["wind"]["speed"] is not None and obs.metar["wind"]["speed"] != "//":
+                        obj["wind_spd"] = int(obs.metar["wind"]["speed"])
+
+                        if obs.metar["wind"]["units"] == 'KT':
+                            obj["wind_spd"] = round(obj["wind_spd"] * 0.51444444444, 2)
+                        elif obs.metar["wind"]["units"] == 'MPS':
+                            pass
+                        else:
+                            print(obs.metar["wind"]["units"])
+                            obj["wind_spd"] = None
+                    else:
+                        obj["wind_spd"] = None
+
+                metar_coll.insert(obj)
