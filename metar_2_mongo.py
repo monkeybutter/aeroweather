@@ -15,13 +15,11 @@ db.authenticate("metar", "metar")
 
 metar_coll = db['metar']
 
-with open('/home/roz016/Desktop/chunk.txt', 'r') as f:
+with open('/home/roz016/Dropbox/Data for Tree/METAR source/LEBL_clean_dups.txt', 'r') as f:
     for line in f:
-        print line
         obs_date = datetime.strptime(line[:8], '%y-%m-%d')
-        obs = metar.Metar(line[9:])
-
-        #print line[8:]
+        obs = metar.Metar(line)
+        print line[:8]
 
         if obs.metar.has_key("datetime") and obs.metar.has_key("dewpoint"):
             obs_date = obs_date.replace(hour=obs.metar["datetime"].hour, minute=obs.metar["datetime"].minute)
@@ -62,7 +60,4 @@ with open('/home/roz016/Desktop/chunk.txt', 'r') as f:
                 else:
                     obj["wind_spd"] = None
 
-
-                #break
             metar_coll.insert(obj)
-            #print obj
